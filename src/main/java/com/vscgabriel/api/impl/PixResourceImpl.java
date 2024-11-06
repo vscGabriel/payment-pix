@@ -23,14 +23,16 @@ public class PixResourceImpl implements PixResource {
     private final PixService pixService;
 
     @Override
-    public Response createWritableLine(final Pix pix) {
-        var key = dictService.searchKey(pix.key());
-        var resp = generateWritableLine(key, pix);
+    public Uni<Response> createWritableLine(Pix pix) {
+        var resp = dictService.searchKey(pix.key())
+                .onItem()
+                .transform(key -> generateWritableLine(key,pix));
+
         return resp;
     }
 
 
-    private Response generateWritableLine(final Key key,final Pix pix) {
+    private Response generateWritableLine(Key key, Pix pix) {
         if (Objects.nonNull(key.key())){
             return Response.ok(pixService.generateWritableLine(key, pix.amount(), pix.mailerCity())).build();
         }

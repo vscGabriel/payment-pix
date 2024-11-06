@@ -16,5 +16,5 @@ public interface PixResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/line")
-    Response createWritableLine(final Pix pix);
+    Uni<Response> createWritableLine(final Pix pix);
 }

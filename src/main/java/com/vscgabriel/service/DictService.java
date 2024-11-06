@@ -4,5 +4,5 @@ import com.vscgabriel.model.Key;
 import io.smallrye.mutiny.Uni;
 
 public interface DictService {
-    Key searchKey(String key);
+    Uni<Key> searchKey(String key);
 }

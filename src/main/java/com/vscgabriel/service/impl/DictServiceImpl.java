@@ -21,7 +21,8 @@ public class DictServiceImpl implements DictService {
     private String name;
 
     @Override
-    public Key searchKey(String key) {
-        return new Key(KeyType.EMAIL, key, ispb, PersonType.JURIDICAL, cnpj, name, LocalDateTime.now());
+    public Uni<Key> searchKey(String key) {
+        return Uni.createFrom()
+                .item(new Key(KeyType.EMAIL, key, ispb, PersonType.JURIDICAL, cnpj, name, LocalDateTime.now()));
     }
 }
