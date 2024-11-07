@@ -9,15 +9,31 @@ import com.vscgabriel.service.PixService;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.AllArgsConstructor;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @AllArgsConstructor
 @ApplicationScoped
 public class PixServiceImpl implements PixService {
 
-    public static final String QRCODE_PATH = "C:\\Users\\a832444\\quarkus3_coffe&it\\payment-pix\\src\\main\\resources\\";
+    public static final String QRCODE_PATH = ".\\";
+
+    @Override
+    public BufferedInputStream generateQrCode(final String uuid) throws IOException {
+    // TODO recuperar cache
+        var imagePath = QRCODE_PATH + uuid + ".png";
+        try {
+          return new BufferedInputStream(new FileInputStream(imagePath));
+        } finally {
+            Files.deleteIfExists(Paths.get(imagePath));
+        }
+    }
 
     @Override
     public WritableLine generateWritableLine(final Key key, BigDecimal amount, String mailerCity) {

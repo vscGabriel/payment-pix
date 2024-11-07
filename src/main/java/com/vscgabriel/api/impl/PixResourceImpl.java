@@ -13,6 +13,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
+
+import java.io.IOException;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -31,12 +33,18 @@ public class PixResourceImpl implements PixResource {
         return resp;
     }
 
-
     private Response generateWritableLine(Key key, Pix pix) {
         if (Objects.nonNull(key.key())){
             return Response.ok(pixService.generateWritableLine(key, pix.amount(), pix.mailerCity())).build();
         }
         return null;
     }
+
+    @Override
+    public Response getQrCode(String uuid) throws IOException {
+        // TODO adicinar controle de excessoes.
+        return Response.ok(pixService.generateQrCode(uuid)).build();
+    }
+
 
 }
