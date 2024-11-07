@@ -60,3 +60,9 @@ If you want to learn more about building native executables, please consult <htt
 Easily start your Reactive RESTful Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+Run docker compose
+```shell script
+docker-compose -f docker-compose-quarkus3.yml up
+```
+

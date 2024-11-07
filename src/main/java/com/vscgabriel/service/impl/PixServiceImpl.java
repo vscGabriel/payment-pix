@@ -22,17 +22,17 @@ import java.util.UUID;
 @ApplicationScoped
 public class PixServiceImpl implements PixService {
 
-    public static final String QRCODE_PATH = ".\\";
+    public static final String QRCODE_PATH = "C:\\Users\\a832444\\quarkus3_coffe&it\\payment-pix\\";
 
     @Override
     public BufferedInputStream generateQrCode(final String uuid) throws IOException {
     // TODO recuperar cache
         var imagePath = QRCODE_PATH + uuid + ".png";
-        try {
+//        try {
           return new BufferedInputStream(new FileInputStream(imagePath));
-        } finally {
-            Files.deleteIfExists(Paths.get(imagePath));
-        }
+//        } finally {
+//            Files.deleteIfExists(Paths.get(imagePath));
+//        }
     }
 
     @Override

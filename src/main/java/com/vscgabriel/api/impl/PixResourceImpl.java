@@ -1,5 +1,6 @@
 package com.vscgabriel.api.impl;
 
+import com.fasterxml.jackson.core.PrettyPrinter;
 import com.vscgabriel.api.PixResource;
 import com.vscgabriel.model.Key;
 import com.vscgabriel.model.Pix;
@@ -26,11 +27,12 @@ public class PixResourceImpl implements PixResource {
 
     @Override
     public Uni<Response> createWritableLine(Pix pix) {
-        var resp = dictService.searchKey(pix.key())
+        return Uni.createFrom().item(pix)
+                .onItem()
+                .transform(p -> dictService.searchKey(p.key()))
                 .onItem()
                 .transform(key -> generateWritableLine(key,pix));
 
-        return resp;
     }
 
     private Response generateWritableLine(Key key, Pix pix) {
