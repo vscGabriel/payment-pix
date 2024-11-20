@@ -1,17 +1,11 @@
 package com.vscgabriel.api.impl;
 
-import com.fasterxml.jackson.core.PrettyPrinter;
 import com.vscgabriel.api.PixResource;
 import com.vscgabriel.model.Key;
 import com.vscgabriel.model.Pix;
 import com.vscgabriel.service.DictService;
 import com.vscgabriel.service.PixService;
 import io.smallrye.mutiny.Uni;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 
@@ -26,12 +20,15 @@ public class PixResourceImpl implements PixResource {
     private final PixService pixService;
 
     @Override
-    public Uni<Response> createWritableLine(Pix pix) {
-        return Uni.createFrom().item(pix)
-                .onItem()
-                .transform(p -> dictService.searchKey(p.key()))
-                .onItem()
-                .transform(key -> generateWritableLine(key,pix));
+    public Response createWritableLine(Pix pix) {
+        var key = dictService.searchKey(pix.key());
+
+        if (Objects.nonNull(key)) {
+            return Response.ok(pixService.generateWritableLine(key, pix.amount(), pix.mailerCity())).build()   ;
+        }
+
+        return null;
+
 
     }
 
@@ -48,5 +45,19 @@ public class PixResourceImpl implements PixResource {
         return Response.ok(pixService.generateQrCode(uuid)).build();
     }
 
+    @Override
+    public Response pixApprove(String uuid) {
+        return Response.ok(pixService.transactionApprove(uuid).get()).build();
+    }
+
+    @Override
+    public Response pixReprove(String uuid) {
+        return Response.ok(pixService.transactionRepprove(uuid).get()).build();
+    }
+
+    @Override
+    public Response findById(String uuid) {
+        return Response.ok(pixService.findById(uuid).get()).build();
+    }
 
 }
