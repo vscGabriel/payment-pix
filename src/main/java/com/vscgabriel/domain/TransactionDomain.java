@@ -4,22 +4,24 @@ import com.vscgabriel.model.Key;
 import com.vscgabriel.model.StatusPix;
 import com.vscgabriel.model.Transaction;
 import com.vscgabriel.model.WritableLine;
-import com.vscgabriel.repository.TransactionPixMongoClientRepository;
+import com.vscgabriel.repository.TransactionPanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.bson.Document;
 
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TransactionDomain {
 
     @Inject
-    TransactionPixMongoClientRepository mongoClientRepository;
+    TransactionPanacheRepository mongoClientRepository;
 
-    @Transactional
     public void addTransaction(final WritableLine writableLine, final BigDecimal amount, final Key key){
         mongoClientRepository.add(writableLine, amount, key);
     }
@@ -38,9 +40,11 @@ public class TransactionDomain {
         return mongoClientRepository.updateStatusTransaction(uuid, StatusPix.IN_PROGRESS);
     }
     public Optional<Transaction> findById(final String uuid) {
-        Optional<Document> optionalDocument = mongoClientRepository.findOne(uuid);
+        return  mongoClientRepository.findOne(uuid);
+    }
 
-        return optionalDocument.map(TransactionConverterApply::apply);
+    public List<Transaction> searchTransaction(final Date initDate, final Date endDate) {
+        return mongoClientRepository.searchTransaction(initDate,endDate);
     }
 
 }

@@ -19,6 +19,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -73,6 +75,10 @@ public class PixServiceImpl implements PixService {
     private void saveWritableLine(Key key, BigDecimal amount, WritableLine writableLine) {
         transactionDomain.addTransaction(writableLine, amount, key);
         writableLineCache.set(writableLine.uuid(), writableLine);
+    }
+
+    public List<Transaction> searchTransaction(final Date initDate, final Date endDate) {
+        return transactionDomain.searchTransaction(initDate,endDate);
     }
 
 }

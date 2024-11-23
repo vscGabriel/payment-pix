@@ -1,5 +1,7 @@
 package com.vscgabriel.model;
 
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import io.quarkus.mongodb.panache.common.MongoEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -7,9 +9,10 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@MongoEntity(collection = "transacao_pix")
 @Data
 @EqualsAndHashCode
-public class Transaction {
+public class Transaction extends PanacheMongoEntity {
     @Schema(description = "Identificador único da transação")
     private String id;
     @Schema(description = "Valor da transação")

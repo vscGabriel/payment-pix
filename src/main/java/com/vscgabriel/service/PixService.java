@@ -7,6 +7,8 @@ import com.vscgabriel.model.WritableLine;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,4 +22,6 @@ public interface PixService {
     BufferedInputStream generateQrCode(final String uuid) throws IOException;
 
     Optional<Transaction> transactionApprove(String uuid);
+
+    List<Transaction> searchTransaction(final Date initDate, final Date endDate);
 }

@@ -9,6 +9,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.quarkus:quarkus-mongodb-panache'
     implementation "io.quarkus:quarkus-mongodb-client"
     implementation "io.quarkus:quarkus-smallrye-openapi"
     compileOnly "org.projectlombok:lombok:1.18.28"  // versão mais recente do Lombok

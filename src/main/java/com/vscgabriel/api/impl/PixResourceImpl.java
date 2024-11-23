@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class PixResourceImpl implements PixResource {
@@ -20,6 +22,8 @@ public class PixResourceImpl implements PixResource {
 
     @Inject
     PixService pixService;
+
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public Response createWritableLine(Pix pix) {
@@ -53,6 +57,11 @@ public class PixResourceImpl implements PixResource {
     @Override
     public Response findById(String uuid) {
         return Response.ok(pixService.findById(uuid).get()).build();
+    }
+
+    @Override
+    public Response findTransactions(String initDate, String endDate) throws ParseException {
+        return Response.ok(pixService.searchTransaction(DATE_FORMAT.parse(initDate), DATE_FORMAT.parse(endDate))).build();
     }
 
 }
