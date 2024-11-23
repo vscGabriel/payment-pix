@@ -1,4 +1,4 @@
-db = db.getSiblingDB("admin")
+db = db.getSiblingDB("pix")
 db.createUser(
     {
         user: "vscgab",

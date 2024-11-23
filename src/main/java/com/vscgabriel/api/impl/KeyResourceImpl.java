@@ -5,7 +5,6 @@ import com.vscgabriel.service.DictService;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 public class KeyResourceImpl implements KeyResource {
 
     DictService dictService;

@@ -11,6 +11,8 @@ import com.vscgabriel.model.Key;
 import com.vscgabriel.model.StatusPix;
 import com.vscgabriel.model.Transaction;
 import com.vscgabriel.model.WritableLine;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.bson.Document;
@@ -21,11 +23,11 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@ApplicationScoped
 public class TransactionPixMongoClientRepository implements TransactionalRepository{
     private static final String AMERICA_SAO_PAULO = "America/Sao_Paulo";
 
+    @Inject
     MongoClient mongoClient;
     @Override
     public void add(WritableLine writableLine, BigDecimal amount, Key key) {
@@ -34,6 +36,7 @@ public class TransactionPixMongoClientRepository implements TransactionalReposit
                 .append(TransactionConverterApply.AMOUNT, amount)
                 .append(TransactionConverterApply.KEY_TYPE, key.keyType())
                 .append(TransactionConverterApply.KEY, key.key())
+                .append(TransactionConverterApply.STATUS, StatusPix.CREATED)
                 .append(TransactionConverterApply.WRITABLE_LINE, writableLine.line())
                 .append(TransactionConverterApply.DATE, LocalDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)));
 

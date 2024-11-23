@@ -1,5 +1,6 @@
 package com.vscgabriel.service.impl;
 
+import com.vscgabriel.config.WritableLineCache;
 import com.vscgabriel.domain.TransactionDomain;
 import com.vscgabriel.model.Key;
 import com.vscgabriel.model.Transaction;
@@ -9,6 +10,7 @@ import com.vscgabriel.model.qrcode.DadosEnvio;
 import com.vscgabriel.model.qrcode.QrCode;
 import com.vscgabriel.service.PixService;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -20,12 +22,14 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @ApplicationScoped
 public class PixServiceImpl implements PixService {
 
+    @Inject
     TransactionDomain transactionDomain;
+
+    @Inject
+    WritableLineCache writableLineCache;
     public static final String QRCODE_PATH = "C:\\Users\\a832444\\quarkus3_coffe&it\\payment-pix\\";
 
     @Override
@@ -56,13 +60,19 @@ public class PixServiceImpl implements PixService {
 
     @Override
     public WritableLine generateWritableLine(final Key key, BigDecimal amount, String mailerCity) {
-        var qrcode = new QrCode(new DadosEnvio(key, amount,mailerCity, ""));
+        var qrcode = new QrCode(new DadosEnvio(key, amount,mailerCity));
         var uuid = UUID.randomUUID().toString();
         var imagePath = QRCODE_PATH + uuid + ".png" ;
         qrcode.save(Path.of(imagePath));
-        // TODO IMPLEMENTAR CACHE
-       String qrCodeString = qrcode.toString();
-
-        return new WritableLine(qrCodeString, uuid);
+        String qrCodeString = qrcode.toString();
+        var writableLine = new WritableLine(qrCodeString, uuid);
+        saveWritableLine(key, amount, writableLine);
+        return writableLine;
     }
+
+    private void saveWritableLine(Key key, BigDecimal amount, WritableLine writableLine) {
+        transactionDomain.addTransaction(writableLine, amount, key);
+        writableLineCache.set(writableLine.uuid(), writableLine);
+    }
+
 }

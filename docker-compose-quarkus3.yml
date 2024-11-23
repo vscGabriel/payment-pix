@@ -29,7 +29,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: password123
       ME_CONFIG_MONGODB_SERVER: mongodb
-      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@mongo:27017/pix?authSource=root
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password123@mongo:27017/pix
 
 volumes:
   mongo_data:

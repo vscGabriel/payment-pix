@@ -13,7 +13,7 @@ public class TransactionConverterApply {
    public static final String ID = "_id";
    public static final String AMOUNT = "amount";
    public static final String STATUS = "status";
-   public static final String WRITABLE_LINE = "writableTline";
+   public static final String WRITABLE_LINE = "writableLine";
    public static final String KEY = "key";
    public static final String KEY_TYPE = "keyType";
    public static final String DATE = "date";

@@ -6,18 +6,20 @@ import com.vscgabriel.model.Pix;
 import com.vscgabriel.service.DictService;
 import com.vscgabriel.service.PixService;
 import io.smallrye.mutiny.Uni;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.util.Objects;
 
-@AllArgsConstructor
 public class PixResourceImpl implements PixResource {
 
-    private final DictService dictService;
+    @Inject
+    DictService dictService;
 
-    private final PixService pixService;
+    @Inject
+    PixService pixService;
 
     @Override
     public Response createWritableLine(Pix pix) {
@@ -30,13 +32,6 @@ public class PixResourceImpl implements PixResource {
         return null;
 
 
-    }
-
-    private Response generateWritableLine(Key key, Pix pix) {
-        if (Objects.nonNull(key.key())){
-            return Response.ok(pixService.generateWritableLine(key, pix.amount(), pix.mailerCity())).build();
-        }
-        return null;
     }
 
     @Override
